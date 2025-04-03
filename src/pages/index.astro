@@ -1,92 +1,155 @@
 ---
 import Layout from "../layouts/Layout.astro";
-// import Hero from "../components/home/splash.astro"
+import Hero from "../components/home/Hero.astro";
+
+const navs = [".linkedin", ".instagram", ".github"];
+
+const certs = {
+  "+ understanding the internet / soi asia":
+    "https://inxignia.soi.asia/public/assertions/YQsW3CvISKqml7rMpYCPRA",
+  "+ operating the internet / soi asia":
+    "https://inxignia.soi.asia/public/assertions/JndIwoSDStykWnh-ILBy6A",
+  "+ apie online / soi asia":
+    "https://inxignia.soi.asia/public/assertions/Hihe_K4gRtOqh85dSm2hhw",
+  "+ apie e-workshop / soi asia":
+    "https://inxignia.soi.asia/public/assertions/bI8nNPLfQwmWRbL3WPg_-g",
+  "+ apie camp / soi asia":
+    "https://inxignia.soi.asia/public/assertions/gyLrDXnOSS2VNYf9sy7OTw",
+  "+ apie internship / soi asia":
+    "https://inxignia.soi.asia/public/assertions/gyLrDXnOSS2VNYf9sy7OTw",
+  "+ apie noc / soi asia": "",
+  "+ cbr2 researcher / soi asia": "",
+};
 ---
 
 <style lang="sass">
-  @use "../styles/_colors.sass" as colors
-  .splash, .hero
-    padding: 40px
+  section
     display: flex
     flex-direction: column
-    row-gap: 8px
-    .splash-desc, .hero-desc
-      max-width: 556px
-      font-weight: bold
-  h2
-    font-size: 24px
-    font-weight: 400
-    padding: 0
-    margin: 0
-    color: colors.$prim-color
-  #desc-typer
-    font-weight: 400
-  .splash-text-container
+    justify-content: space-between
+    height: 100vh
+  .top-row
     display: flex
-</style>
-<Layout pageTitle="Home">
-  <!-- <Hero></Hero> -->
+    width: 100%
+    justify-content: space-between
+    padding: 40px
+  ul
+    list-style-type: none
+    display: flex
+    flex-direction: row
+    column-gap: 28px
 
-  <div class="splash">
-    <h2>home/rayyanekaputra</h2>
-    <div class="splash-text-container">
-      <h2 id="loading-text" class="splash-desc"></h2>
-      <h2 class="hero-desc display-none transparent">
-        cybersecurity researcher, graduate from hasanuddin university. focuses
-        on network and blue-teaming.
-        <span
-          id="desc-typer"
-          class="typer"
-          data-colors="#23895D"
-          data-delay="45"
-          data-words=" ,also doing web designs and development"
-          data-delete-delay="4000"></span>
-        <span class="cursor" data-owner="desc-typer" data-cursor-display="_"
-        ></span>
-      </h2>
+  .bottom-row
+    display: flex
+    flex-direction: column
+    padding: 40px
+    ul
+      flex-direction: column
+</style>
+
+<Layout pageTitle="Home">
+  <section class="first">
+    <div class="top-row">
+      <Hero />
+
+      <ul>
+        {
+          navs.map((nav) => (
+            <li>
+              <p>{nav}</p>
+            </li>
+          ))
+        }
+      </ul>
     </div>
-  </div>
+    <div class="bottom-row">
+      <p class="certification-title transparent">certifications:</p>
+      <ul>
+        {
+          Object.entries(certs).map(([certName, certLink]) => (
+            <li class="cert-item transparent">
+              {certLink ? (
+                <a href={certLink} target="_blank" rel="noopener noreferrer">
+                  <p>{certName}</p>
+                </a>
+              ) : (
+                <p>{certName}</p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </Layout>
 <script>
   import anime from "animejs";
 
   var loadingTextEl = document.querySelector("#loading-text") as HTMLElement; //as HTMLElement gara2 typescript, baekji kalau tanpa itu
   var heroDescEl = document.querySelector(".hero-desc") as HTMLElement;
+  var certItemsEl = document.querySelectorAll(".cert-item");
+  var certTitleEl = document.querySelector(
+    ".certification-title"
+  ) as HTMLElement;
 
   var tl = anime.timeline({
-    duration: 1200
+    duration: 1200,
   });
   tl
-  //ANIMASI LOADING
-  .add({
-    targets: loadingTextEl,
-    innerText: "Loading " + [100] + "%",
-    round: 1,
-    easing: "easeInOutExpo",
-    duration: 3000,
-    delay: 400,
-    complete: function (anim) {
-      heroDescEl.classList.remove("display-none");
-    },
-  })
-  //HAPUS LOADING
-  .add({
-    targets: loadingTextEl,
-    opacity: 0,
-    easing: "easeInOutExpo",
-    complete: function (anim) {
-      console.log(heroDescEl);
-      loadingTextEl.classList.add("transparent", "display-none")
-    }
-  })
-  //MASUKKAN HERO DESC
-  .add({
-    targets: heroDescEl,
-    opacity: 1,
-    easing: "easeInOutExpo",
-    complete: function (anim) {
-      console.log(heroDescEl);
-    }
-  });
+    //ANIMASI LOADING
+    .add({
+      targets: loadingTextEl,
+      innerText: "Loading " + [100] + "%",
+      round: 1,
+      easing: "easeInOutExpo",
+      duration: 3000,
+      delay: 400,
+      complete: function (anim) {
+        heroDescEl.classList.remove("display-none");
+      },
+    })
+    //HAPUS LOADING
+    .add({
+      targets: loadingTextEl,
+      opacity: 0,
+      easing: "easeInOutExpo",
+      complete: function (anim) {
+        console.log(heroDescEl);
+        loadingTextEl.classList.add("transparent", "display-none");
+      },
+    })
+    //MASUKKAN HERO DESC
+    .add({
+      targets: heroDescEl,
+      opacity: 1,
+      easing: "easeInOutExpo",
+      complete: function (anim) {
+        console.log(heroDescEl);
+      },
+    })
+    //MASUKKAN CERTIFICATION TITLE
+    .add({
+      targets: certTitleEl,
+      opacity: 1,
+      delay: anime.stagger(100),
+      easing: "easeInOutExpo",
+      complete: function () {
+        certTitleEl.classList.remove("transparent");
+      },
+    })
+    //MASUKKAN CERTIFICATIONS
+    .add({
+      targets: certItemsEl,
+      opacity: 1,
+      delay: anime.stagger(100),
+      easing: "easeInOutExpo",
+      complete: function () {
+        certItemsEl.forEach((certItemEl) => {
+          //remove satu2 njo kelas transparentna
+          console.log(certItemEl);
+          certItemEl.classList.remove("transparent");
+        });
+      },
+    });
 </script>
 <script src="../scripts/typer.js"></script>

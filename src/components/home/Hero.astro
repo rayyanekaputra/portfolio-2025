@@ -1,39 +1,44 @@
 ---
 
 ---
-
 <style lang="sass">
-@use "../../styles/_colors.sass" as colors
-.hero
-    padding: 40px
+  @use "../../styles/_colors.sass" as colors
+  .splash, .hero
     display: flex
     flex-direction: column
     row-gap: 8px
-    .hero-desc
-        max-width: 556px
-        font-weight: bold
-h2
+    .splash-desc, .hero-desc
+      max-width: 556px
+      font-weight: bold
+  h2
     font-size: 24px
     font-weight: 400
     padding: 0
     margin: 0
     color: colors.$prim-color
-#desc-typer
+  #desc-typer
     font-weight: 400
+  .splash-text-container
+    display: flex
 </style>
-<div class="hero">
+<div class="splash">
   <h2>home/rayyanekaputra</h2>
-  <h2 class="hero-desc">
-    cybersecurity researcher, graduate from hasanuddin university. focuses on
-    network and blue-teaming.
-    <span
-      id="desc-typer"
-      class="typer"
-      data-colors="#23895D"
-      data-delay="45"
-      data-words="also doing web designs and development"
-      data-delete-delay="4000"></span>
-    <span class="cursor" data-owner="desc-typer" data-cursor-display="_"></span>
-  </h2>
+  <div class="splash-text-container">
+    <h2 id="loading-text" class="splash-desc"></h2>
+    <h2 class="hero-desc display-none transparent">
+      cybersecurity researcher, graduate from hasanuddin university. focuses
+      on network and blue-teaming.
+      <span
+        id="desc-typer"
+        class="typer"
+        data-colors="#23895D"
+        data-delay="45"
+        data-words=" ,also doing web designs and development"
+        data-delete-delay="4000"></span>
+      <span class="cursor" data-owner="desc-typer" data-cursor-display="_"
+      ></span>
+    </h2>
+  </div>
 </div>
-<script src="../../scripts/typer.js"></script>
+</script>
+
