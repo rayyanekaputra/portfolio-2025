@@ -1,8 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro"
 import Hero from "../components/home/Hero.astro";
-
-const navs = [".linkedin", ".instagram", ".github"];
 
 const certs = {
   "+ understanding the internet / soi asia":
@@ -33,12 +32,6 @@ const certs = {
     width: 100%
     justify-content: space-between
     padding: 40px
-  ul
-    list-style-type: none
-    display: flex
-    flex-direction: row
-    column-gap: 28px
-
   .bottom-row
     display: flex
     flex-direction: column
@@ -51,16 +44,11 @@ const certs = {
   <section class="first">
     <div class="top-row">
       <Hero />
-
-      <ul>
-        {
-          navs.map((nav) => (
-            <li>
-              <p>{nav}</p>
-            </li>
-          ))
-        }
-      </ul>
+      <Navbar navs={[
+        { name: ".linkedin", link: "https://www.linkedin.com/in/rayyan-eka-putra/" },
+        { name: ".instagram", link: "https://www.instagram.com/rayyanekaputram" },
+        { name: ".github", link: "https://github.com/rayyanekaputra/" }
+      ]} />
     </div>
     <div class="bottom-row">
       <p class="certification-title transparent">certifications:</p>
