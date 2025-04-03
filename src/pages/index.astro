@@ -2,76 +2,91 @@
 import Layout from "../layouts/Layout.astro";
 // import Hero from "../components/home/splash.astro"
 ---
-<style lang="sass">
-	@use "../styles/_colors.sass" as colors
-	.splash
-		padding: 40px
-		display: flex
-		flex-direction: column
-		row-gap: 8px
-		.splash-desc, span
-			max-width: 556px
-			font-weight: bold
-	h2
-		font-size: 24px
-		font-weight: 400
-		padding: 0
-		margin: 0
-		color: colors.$prim-color
-	#desc-typer
-		font-weight: 400
-	.splash-text-container
-		display: flex
 
-	</style>
+<style lang="sass">
+  @use "../styles/_colors.sass" as colors
+  .splash, .hero
+    padding: 40px
+    display: flex
+    flex-direction: column
+    row-gap: 8px
+    .splash-desc, .hero-desc
+      max-width: 556px
+      font-weight: bold
+  h2
+    font-size: 24px
+    font-weight: 400
+    padding: 0
+    margin: 0
+    color: colors.$prim-color
+  #desc-typer
+    font-weight: 400
+  .splash-text-container
+    display: flex
+</style>
 <Layout pageTitle="Home">
   <!-- <Hero></Hero> -->
 
   <div class="splash">
-	<h2>home/rayyanekaputra</h2>
-	<div class="splash-text-container">
-		<h2 id = "loading-text" class="splash-desc">
-			Loading
-			  <span id="loading-nums">0%
-			  </span>
-			  
-			</h2>
-	</div>
+    <h2>home/rayyanekaputra</h2>
+    <div class="splash-text-container">
+      <h2 id="loading-text" class="splash-desc"></h2>
+      <h2 class="hero-desc display-none transparent">
+        cybersecurity researcher, graduate from hasanuddin university. focuses
+        on network and blue-teaming.
+        <span
+          id="desc-typer"
+          class="typer"
+          data-colors="#23895D"
+          data-delay="45"
+          data-words=" ,also doing web designs and development"
+          data-delete-delay="4000"></span>
+        <span class="cursor" data-owner="desc-typer" data-cursor-display="_"
+        ></span>
+      </h2>
+    </div>
   </div>
 </Layout>
-<script src="../scripts/typer.js"></script>
 <script>
-import anime from 'animejs'
-import Typewriter from '../scripts/typewriter';
+  import anime from "animejs";
 
-var loadingTextEl = document.querySelector("#loading-text") as HTMLElement //as HTMLElement gara2 typescript, baekji kalau tanpa itu
-var loadingNumsEl = document.querySelector("#loading-nums") as HTMLElement //as HTMLElement gara2 typescript, baekji kalau tanpa itu
+  var loadingTextEl = document.querySelector("#loading-text") as HTMLElement; //as HTMLElement gara2 typescript, baekji kalau tanpa itu
+  var heroDescEl = document.querySelector(".hero-desc") as HTMLElement;
 
-anime({
-  targets: loadingNumsEl,
-  innerText: [0, 100],
-  round: 1,
-  easing: 'easeInOutExpo',
-  duration: 3000,
-  complete: function() {
-    const tw = new Typewriter(loadingTextEl, {
-      words: ['cybersecurity researcher, graduate from hasanuddin university. focuses on network and blue-teaming.'],
-      delay: 45,
-      deleteDelay: 800, // Small delay needed for completion detection
-      loop: false,
-      showCursor: false,
-      complete: () => {
-        console.log('Typewriter completed!'); // Now this will fire
-        // Add any post-animation logic here
-      }
-    });
-
-    tw.start();
-
-    // Alternative promise-based completion
-    tw.finished.then(() => {
-      console.log('Typewriter sequence fully finished');
-    });
-  }
-});
-</script>	
+  var tl = anime.timeline({
+    duration: 1200
+  });
+  tl
+  //ANIMASI LOADING
+  .add({
+    targets: loadingTextEl,
+    innerText: "Loading " + [100] + "%",
+    round: 1,
+    easing: "easeInOutExpo",
+    duration: 3000,
+    delay: 400,
+    complete: function (anim) {
+      heroDescEl.classList.remove("display-none");
+    },
+  })
+  //HAPUS LOADING
+  .add({
+    targets: loadingTextEl,
+    opacity: 0,
+    easing: "easeInOutExpo",
+    complete: function (anim) {
+      console.log(heroDescEl);
+      loadingTextEl.classList.add("transparent", "display-none")
+    }
+  })
+  //MASUKKAN HERO DESC
+  .add({
+    targets: heroDescEl,
+    opacity: 1,
+    easing: "easeInOutExpo",
+    complete: function (anim) {
+      console.log(heroDescEl);
+    }
+  });
+</script>
+<script src="../scripts/typer.js"></script>
