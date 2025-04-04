@@ -1,0 +1,34 @@
+---
+const certs = {
+  "+ understanding the internet / soi asia":
+    "https://inxignia.soi.asia/public/assertions/YQsW3CvISKqml7rMpYCPRA",
+  "+ operating the internet / soi asia":
+    "https://inxignia.soi.asia/public/assertions/JndIwoSDStykWnh-ILBy6A",
+  "+ apie online / soi asia":
+    "https://inxignia.soi.asia/public/assertions/Hihe_K4gRtOqh85dSm2hhw",
+  "+ apie e-workshop / soi asia":
+    "https://inxignia.soi.asia/public/assertions/bI8nNPLfQwmWRbL3WPg_-g",
+  "+ apie camp / soi asia":
+    "https://inxignia.soi.asia/public/assertions/gyLrDXnOSS2VNYf9sy7OTw",
+  "+ apie internship / soi asia":
+    "https://inxignia.soi.asia/public/assertions/gyLrDXnOSS2VNYf9sy7OTw",
+  "+ apie noc / soi asia": "",
+  "+ cbr2 researcher / soi asia": "",
+};
+---
+<p class="certification-title transparent">certifications:</p>
+<ul>
+  {
+    Object.entries(certs).map(([certName, certLink]) => (
+      <li class="cert-item transparent">
+        {certLink ? (
+          <a href={certLink} target="_blank" rel="noopener noreferrer">
+            <p>{certName}</p>
+          </a>
+        ) : (
+          <p>{certName}</p>
+        )}
+      </li>
+    ))
+  }
+</ul>
