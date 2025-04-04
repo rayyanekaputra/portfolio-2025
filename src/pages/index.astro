@@ -38,6 +38,49 @@ const certs = {
     padding: 40px
     ul
       flex-direction: column
+
+  .polaroid-card
+    position: absolute   
+
+    width: 346px
+    height: 452px
+    
+    padding: 12px 12px 60px 12px 
+    background: white
+    box-shadow: 0px 0px 25px rgb(0 0 0 / 10%);
+    img
+      image-rendering: smooth
+      object-position: 50% 50%;
+      heigth: 100%
+      object-fit: cover;
+      mix-blend-mode: luminosity
+    .polaroid-photo
+      background-color: grey
+      width: 100%
+      heigth: 100%
+      border-radius: 8px
+  .card-1
+    bottom: -120px
+    right: 300px
+    z-index: 0
+    transform: rotate(-18.96deg);
+  .card-2
+    bottom: 13px
+    right: 218px
+    z-index: 1
+    transform: rotate(-10.72deg);
+  .card-3
+    bottom: 75px
+    right: 75px
+    z-index: 3
+    transform: rotate(-5.81deg);
+  .card-4
+    bottom: -58px
+    right: -65px
+    z-index: 2
+    transform: rotate(6.99deg);
+
+
 </style>
 
 <Layout pageTitle="Home">
@@ -67,6 +110,29 @@ const certs = {
           ))
         }
       </ul>
+
+
+    </div>
+
+    <div class="polaroid-card card-1">
+      <div class="polaroid-photo">
+        <img src="/photos/frame04.png" alt="fotoku"/>
+      </div>
+    </div>
+    <div class="polaroid-card card-2">
+      <div class="polaroid-photo">
+        <img src="/photos/frame02.png" alt="fotoku"/>
+      </div>
+    </div>
+    <div class="polaroid-card card-3">
+      <div class="polaroid-photo">
+        <img src="/photos/frame01.png" alt="fotoku"/>
+      </div>
+    </div>
+    <div class="polaroid-card card-4">
+      <div class="polaroid-photo">
+        <img src="/photos/frame03.png" alt="fotoku"/>
+      </div>
     </div>
   </section>
 </Layout>
