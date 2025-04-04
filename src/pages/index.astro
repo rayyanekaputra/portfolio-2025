@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro"
+import Navbar from "../components/Navbar.astro";
 import Hero from "../components/home/Hero.astro";
 
 const certs = {
@@ -40,19 +40,19 @@ const certs = {
       flex-direction: column
 
   .polaroid-card
-    position: absolute   
+    position: absolute
 
     width: 346px
     height: 452px
-    
-    padding: 12px 12px 60px 12px 
+
+    padding: 12px 12px 60px 12px
     background: white
-    box-shadow: 0px 0px 25px rgb(0 0 0 / 10%);
+    box-shadow: 0px 0px 25px rgb(0 0 0 / 10%)
     img
       image-rendering: smooth
-      object-position: 50% 50%;
+      object-position: 50% 50%
       heigth: 100%
-      object-fit: cover;
+      object-fit: cover
       mix-blend-mode: luminosity
     .polaroid-photo
       background-color: grey
@@ -63,35 +63,41 @@ const certs = {
     bottom: -120px
     right: 300px
     z-index: 0
-    transform: rotate(-18.96deg);
+    transform: rotate(-18.96deg)
   .card-2
     bottom: 13px
     right: 218px
     z-index: 1
-    transform: rotate(-10.72deg);
+    transform: rotate(-10.72deg)
   .card-3
     bottom: 75px
     right: 75px
     z-index: 3
-    transform: rotate(-5.81deg);
+    transform: rotate(-5.81deg)
   .card-4
     bottom: -58px
     right: -65px
     z-index: 2
-    transform: rotate(6.99deg);
-
-
+    transform: rotate(6.99deg)
 </style>
 
 <Layout pageTitle="Home">
   <section class="first">
     <div class="top-row">
       <Hero />
-      <Navbar navs={[
-        { name: ".linkedin", link: "https://www.linkedin.com/in/rayyan-eka-putra/" },
-        { name: ".instagram", link: "https://www.instagram.com/rayyanekaputram" },
-        { name: ".github", link: "https://github.com/rayyanekaputra/" }
-      ]} />
+      <Navbar
+        navs={[
+          {
+            name: ".linkedin",
+            link: "https://www.linkedin.com/in/rayyan-eka-putra/",
+          },
+          {
+            name: ".instagram",
+            link: "https://www.instagram.com/rayyanekaputram",
+          },
+          { name: ".github", link: "https://github.com/rayyanekaputra/" },
+        ]}
+      />
     </div>
     <div class="bottom-row">
       <p class="certification-title transparent">certifications:</p>
@@ -110,34 +116,32 @@ const certs = {
           ))
         }
       </ul>
-
-
     </div>
 
     <div class="polaroid-card card-1">
       <div class="polaroid-photo">
-        <img src="/photos/frame04.png" alt="fotoku"/>
+        <img src="/photos/frame04.png" alt="fotoku" />
       </div>
     </div>
     <div class="polaroid-card card-2">
       <div class="polaroid-photo">
-        <img src="/photos/frame02.png" alt="fotoku"/>
+        <img src="/photos/frame02.png" alt="fotoku" />
       </div>
     </div>
     <div class="polaroid-card card-3">
       <div class="polaroid-photo">
-        <img src="/photos/frame01.png" alt="fotoku"/>
+        <img src="/photos/frame01.png" alt="fotoku" />
       </div>
     </div>
     <div class="polaroid-card card-4">
       <div class="polaroid-photo">
-        <img src="/photos/frame03.png" alt="fotoku"/>
+        <img src="/photos/frame03.png" alt="fotoku" />
       </div>
     </div>
   </section>
 </Layout>
 <script>
-  import anime from "animejs";
+  import { animate, createTimeline, stagger, utils } from "animejs";
 
   var loadingTextEl = document.querySelector("#loading-text") as HTMLElement; //as HTMLElement gara2 typescript, baekji kalau tanpa itu
   var heroDescEl = document.querySelector(".hero-desc") as HTMLElement;
@@ -145,65 +149,81 @@ const certs = {
   var certTitleEl = document.querySelector(
     ".certification-title"
   ) as HTMLElement;
+  var polaroidCardsEl = document.querySelectorAll(".polaroid-card");
 
-  var tl = anime.timeline({
-    duration: 1200,
+  var tl = createTimeline({
+    // duration: 1200,
   });
   tl
     //ANIMASI LOADING
-    .add({
-      targets: loadingTextEl,
+    .add(loadingTextEl, {
       innerText: "Loading " + [100] + "%",
-      round: 1,
-      easing: "easeInOutExpo",
-      duration: 3000,
+      modifier: utils.roundPad(0),
+      ease: "inOutExpo",
+      duration: 5000,
       delay: 400,
-      complete: function (anim) {
-        heroDescEl.classList.remove("display-none");
-      },
+      onComplete: () => heroDescEl.classList.remove("display-none"),
     })
-    //HAPUS LOADING
-    .add({
-      targets: loadingTextEl,
-      opacity: 0,
-      easing: "easeInOutExpo",
-      complete: function (anim) {
-        console.log(heroDescEl);
-        loadingTextEl.classList.add("transparent", "display-none");
-      },
-    })
-    //MASUKKAN HERO DESC
-    .add({
-      targets: heroDescEl,
-      opacity: 1,
-      easing: "easeInOutExpo",
-      complete: function (anim) {
-        console.log(heroDescEl);
-      },
-    })
-    //MASUKKAN CERTIFICATION TITLE
-    .add({
-      targets: certTitleEl,
-      opacity: 1,
-      delay: anime.stagger(100),
-      easing: "easeInOutExpo",
-      complete: function () {
-        certTitleEl.classList.remove("transparent");
-      },
-    })
-    //MASUKKAN CERTIFICATIONS
-    .add({
-      targets: certItemsEl,
-      opacity: 1,
-      delay: anime.stagger(100),
-      easing: "easeInOutExpo",
-      complete: function () {
-        certItemsEl.forEach((certItemEl) => {
-          //remove satu2 njo kelas transparentna
-          console.log(certItemEl);
-          certItemEl.classList.remove("transparent");
-        });
-      },
-    });
+  // //HAPUS LOADING
+  .add(
+    loadingTextEl,
+    {
+    opacity: 0,
+    ease: "inOutExpo",
+    onComplete: ()=> {
+      console.log(heroDescEl);
+      loadingTextEl.classList.add("transparent", "display-none");
+    },
+  })
+  //MASUKKAN HERO DESC
+  .add(
+    heroDescEl,
+    {
+    opacity: 1,
+    ease: "inOutExpo",
+    onComplete: ()=> {
+      console.log(heroDescEl);
+    },
+  })
+  //MASUKKAN CERTIFICATION TITLE
+  .add(
+    certTitleEl,
+    {
+    opacity: 1,
+    delay: stagger(100),
+    ease: "inOutExpo",
+    onComplete: () => {
+      certTitleEl.classList.remove("transparent");
+    },
+  })
+  //MASUKKAN CERTIFICATIONS
+  .add(
+    certItemsEl,
+    {
+    opacity: 1,
+    delay: stagger(100),
+    ease: "inOutExpo",
+    onComplete: () => {
+      certItemsEl.forEach((certItemEl) => {
+        //remove satu2 njo kelas transparentna
+        console.log(certItemEl);
+        certItemEl.classList.remove("transparent");
+      });
+    },
+  })
+  // //POLAROIDS
+  // .add({
+  //   targets: certItemsEl,
+  //   opacity: 1,
+  //   delay: animate.stagger(100),
+  //   ease: "inOutExpo",
+  //   onComplete: () => {
+  //     certItemsEl.forEach((certItemEl) => {
+  //       //remove satu2 njo kelas transparentna
+  //       console.log(certItemEl);
+  //       certItemEl.classList.remove("transparent");
+  //     });
+  //   },
+  // });
 </script>
 <script src="../scripts/typer.js"></script>
