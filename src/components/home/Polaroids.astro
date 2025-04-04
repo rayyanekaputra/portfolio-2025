@@ -8,22 +8,28 @@
 
     width: 346px
     height: 452px
+    @media (max-width: 1440px) 
+      width: 242px;
+      height: 316px;
 
     padding: 12px 12px 60px 12px
     background: white
     box-shadow: 0px 0px 25px rgb(0 0 0 / 10%)
     opacity: 0
     img
+      background-color: red
       image-rendering: smooth
       object-position: 50% 50%
-      heigth: 100%
+      width: 100%
       object-fit: cover
         //   mix-blend-mode: luminosity
-      .polaroid-photo
-        background-color: grey
-        width: 100%
-        heigth: 100%
-        border-radius: 8px
+  .polaroid-photo
+    display: block
+    background-color: grey
+    overflow: hidden
+    width: 100%
+    heigth: 100%
+    border-radius: 12px
   .card-1
     bottom: 262px
     right: calc(766px + 30vw)

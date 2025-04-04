@@ -1,0 +1,40 @@
+@use './_fonts.sass'
+@use './_colors.sass' as colors
+//https://sass-lang.com/documentation/at-rules/import/#partials
+    
+*
+    box-sizing: border-box
+    padding: 0
+    margin: 0
+
+@media (max-width: 1440px)
+    body
+        display: block
+        font-family: 'JetBrains Mono', 'consolas', monospace
+        font-size: 16px
+        letter-spacing: -1.2px
+        background-color: colors.$bg-color
+        color: colors.$prim-color !important
+        overflow: hidden
+    .transparent
+        opacity: 0
+    .display-none
+        display: none
+    p
+        font-size: 12px
+        margin: 0
+    ul
+        list-style-type: none
+        padding: 0
+        margin: 0
+    div
+        padding: 0
+        margin: 0
+        display: flex
+    a
+        text-decoration: underline
+        color: colors.$prim-color
+    img
+        pointer-events: none
+
+

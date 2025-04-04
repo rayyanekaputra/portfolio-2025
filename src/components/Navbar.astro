@@ -1,38 +1,67 @@
 ---
-interface Navs{
-    name: string;
-    link: string;
+interface Navs {
+  name: string;
+  link: string;
 }
 
-const navs:Navs[] = Astro.props.navs || [
-    {name: "Social 1", link: "Link"},
-    {name: "Social 2", link: "Link"},
-    {name: "Social 3", link: "Link"}
-]
+const navs: Navs[] = Astro.props.navs || [
+  { name: "Social 1", link: "Link" },
+  { name: "Social 2", link: "Link" },
+  { name: "Social 3", link: "Link" },
+];
 ---
 
 <style lang="sass">
-  ul
+  ul.navbar-ul
+    @media (max-width: 1440px)
+      display: none
+
     list-style-type: none
     display: flex
     flex-direction: row
     column-gap: 28px
     .navbar-ul li a
-        text-decoration: none
+      text-decoration: none
+
+  button.navbar-mobile-btn
+    @media (min-width: 1440px)
+      display: none
+    display: flex
+    justify-content: center
+    align-items: center
+    column-gap: 12px
+    border-radius: 4px
+    background: radial-gradient(ellipse at top,#23895D 0%, #7FD677 100%)
+    border: none
+    padding: 8px 12px
+    height: fit-content
+    font: inherit
+    font-weight: bold
+    color: #16553A
+    cursor: pointer
+    outline: solid 1px #23895D
+    user-select: none
+    box-shadow: 0px 0px 10px rgb(0 0 0 / 15%), inset 0 0.5px 0 1px rgb(255 255 255 / 15%)
+    transition: transform 0.1s // Smooth transitions
+    // Pressed state (active)
+    &:active
+      transform: scale(0.95) // Slight "push" effect
 </style>
+<button class="navbar-mobile-btn"><p>more</p><img src="/icons/more_ic.svg" alt="more icon"></button>
 <ul class="navbar-ul">
   {
     navs.map((nav) => (
       <li>
         {/* check kalau ada link-nya */}
         {nav.link ? (
-                <a href={nav.link} target="_blank" rel="noopener noreferrer">
-                  <p>{nav.name}</p>
-                </a>
-              ) : (
-                <p>{nav.name}</p>
-              )}
+          <a href={nav.link} target="_blank" rel="noopener noreferrer">
+            <p>{nav.name}</p>
+          </a>
+        ) : (
+          <p>{nav.name}</p>
+        )}
       </li>
     ))
   }
 </ul>
+
