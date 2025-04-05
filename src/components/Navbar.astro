@@ -24,8 +24,7 @@ const navs: Navs[] = Astro.props.navs || [
       text-decoration: none
 
   button.navbar-mobile-btn
-    @media (min-width: 1440px)
-      display: none
+    z-index: 99999
     display: flex
     justify-content: center
     align-items: center
@@ -46,6 +45,8 @@ const navs: Navs[] = Astro.props.navs || [
     // Pressed state (active)
     &:active
       transform: scale(0.95) // Slight "push" effect
+    @media (min-width: 1440px)
+      display: none
 </style>
 <button class="navbar-mobile-btn"><p>more</p><img src="/icons/more_ic.svg" alt="more icon"></button>
 <ul class="navbar-ul">
@@ -64,4 +65,5 @@ const navs: Navs[] = Astro.props.navs || [
     ))
   }
 </ul>
+<script></script>
 

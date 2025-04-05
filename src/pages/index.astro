@@ -24,10 +24,20 @@ import Polaroids from "../components/home/Polaroids.astro";
     padding: 40px
     ul
       flex-direction: column
+  .mobile-menu-overlay
+    position: fixed
+    width: 100vw
+    height: 100vh
+    background-color: rgba(127 214 119/ 60%)
+    // background-color: black
+    backdrop-filter: blur(1px)
+    z-index: 99999
+    clip-path: circle(100% at 50% 50%)
 </style>
 
 <Layout pageTitle="Rayyan Eka Putra | Security & Internet Engineer">
   <section class="first">
+    <div class="mobile-menu-overlay"></div>
     <div class="top-row">
       <Hero />
       <Navbar
@@ -60,6 +70,12 @@ import Polaroids from "../components/home/Polaroids.astro";
     createDraggable,
   } from "animejs";
 
+  /*
+  TIMELINE ANIMATION FOR HOME
+  */
+  let mobileMenuOverlay = document.querySelector(
+    ".mobile-menu-overlay"
+  ) as HTMLElement;
   let loadingTextEl = document.querySelector("#loading-text") as HTMLElement; //as HTMLElement gara2 typescript, baekji kalau tanpa itu
   let heroDescEl = document.querySelector(".hero-desc") as HTMLElement;
   let certItemsEl = document.querySelectorAll(".cert-item");
@@ -67,7 +83,7 @@ import Polaroids from "../components/home/Polaroids.astro";
     ".certification-title"
   ) as HTMLElement;
 
-  // Store all drag instances in an array
+  // Store all drag instances in an array, btw objects, array, dan functions kalau disimpan dalam variable, itu pass-by-reference
   const dragInstances = [];
 
   //DRAGGING FUNCTION --> dipanggil di onComplete animasi Polaroids
@@ -77,27 +93,51 @@ import Polaroids from "../components/home/Polaroids.astro";
       container: ".first",
     });
 
+  let isMobileMenuOpen: boolean = false;
+  const openMobileMenuAnim = () => {
+    console.log("TERKLIK");
+    animate(mobileMenuOverlay, {
+      clipPath: `circle(${isMobileMenuOpen ? "0%" : "100%"} at 50% 50%)`,
+      ease: "inOutExpo",
+    });
+    isMobileMenuOpen = !isMobileMenuOpen;
+  };
+
   //MORE BUTTON --> RESET dan BUKA MENU
   let btnNavbarMobile = document.querySelector("button.navbar-mobile-btn");
   const navbarMoreButton = (draggingInstances) => {
-    btnNavbarMobile?.addEventListener("click", () => {
+    const handleMobileClick = () => {
       draggingInstances.forEach((draggingInstance) => draggingInstance.reset());
-    });
+      openMobileMenuAnim();
+    };
+    btnNavbarMobile?.removeEventListener("click", handleMobileClick);
+    btnNavbarMobile?.addEventListener("click", handleMobileClick);
+    /*
+    MOBILE MENU ANIMATION
+    */
   };
 
   let tl = createTimeline({
     // duration: 1200,
   });
-  tl
+  tl.add(mobileMenuOverlay, {
+    clipPath: "circle(0% at 50% 50%)",
+    ease: "inOutExpo",
+    delay: 300,
+  })
     //ANIMASI LOADING
-    .add(loadingTextEl, {
-      innerText: "Loading " + [100] + "%",
-      modifier: utils.roundPad(0),
-      ease: "inOutExpo",
-      duration: 2000,
-      delay: 400,
-      onComplete: () => heroDescEl.classList.remove("display-none"),
-    })
+    .add(
+      loadingTextEl,
+      {
+        innerText: "Loading " + [100] + "%",
+        modifier: utils.roundPad(0),
+        ease: "inOutExpo",
+        duration: 2000,
+        delay: 400,
+        onComplete: () => heroDescEl.classList.remove("display-none"),
+      },
+      "<<"
+    )
     // //HAPUS LOADING
     .add(loadingTextEl, {
       opacity: 0,
@@ -137,19 +177,19 @@ import Polaroids from "../components/home/Polaroids.astro";
         });
       },
     })
-    //POLAROIDS
+    //POLAROIDS MUNCUL
     .add(polaroidCardsEl, {
       opacity: 1,
       delay: stagger(100),
       ease: "inOutExpo",
       onComplete: () => {
-        //DRAGABLES
+        //POLAROIDS DRAGGABLE
         polaroidCardsEl.forEach((cardEl) => {
           const dragMe = dragPolaroids(cardEl);
-          dragInstances.push(dragMe); // Store the instance
-          navbarMoreButton(dragInstances); // Pass all instances
-        });``
+          dragInstances.push(dragMe); // Store the instance's reference
+        });
       },
     });
+  navbarMoreButton(dragInstances); // Pass all instances
 </script>
 <script src="../scripts/typer.js"></script>
