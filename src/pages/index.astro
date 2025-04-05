@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/home/Hero.astro";
 import Certification from "../components/home/Certification.astro";
-import Polaroids from "../components/home/Polaroids.astro"
+import Polaroids from "../components/home/Polaroids.astro";
 ---
 
 <style lang="sass">
@@ -24,7 +24,7 @@ import Polaroids from "../components/home/Polaroids.astro"
     padding: 40px
     ul
       flex-direction: column
-    </style>
+</style>
 
 <Layout pageTitle="Rayyan Eka Putra | Security & Internet Engineer">
   <section class="first">
@@ -43,14 +43,15 @@ import Polaroids from "../components/home/Polaroids.astro"
           { name: ".github", link: "https://github.com/rayyanekaputra/" },
         ]}
       />
-      </div>
-    <div class="bottom-row">
-     <Certification></Certification>
     </div>
-    <Polaroids></Polaroids>
+    <div class="bottom-row">
+      <Certification />
+    </div>
+    <Polaroids />
   </section>
 </Layout>
 <script>
+  //ANIMATION SCRIPTS
   import {
     animate,
     createTimeline,
@@ -59,15 +60,29 @@ import Polaroids from "../components/home/Polaroids.astro"
     createDraggable,
   } from "animejs";
 
-  var loadingTextEl = document.querySelector("#loading-text") as HTMLElement; //as HTMLElement gara2 typescript, baekji kalau tanpa itu
-  var heroDescEl = document.querySelector(".hero-desc") as HTMLElement;
-  var certItemsEl = document.querySelectorAll(".cert-item");
-  var certTitleEl = document.querySelector(
+  let loadingTextEl = document.querySelector("#loading-text") as HTMLElement; //as HTMLElement gara2 typescript, baekji kalau tanpa itu
+  let heroDescEl = document.querySelector(".hero-desc") as HTMLElement;
+  let certItemsEl = document.querySelectorAll(".cert-item");
+  let certTitleEl = document.querySelector(
     ".certification-title"
   ) as HTMLElement;
-  var polaroidCardsEl = document.querySelectorAll(".polaroid-card");
 
-  var tl = createTimeline({
+  //DRAGGING FUNCTION
+  let polaroidCardsEl = document.querySelectorAll(".polaroid-card");
+  const dragPolaroids = (el) =>
+    createDraggable(el, {
+      container: ".first",
+    });
+
+  //MORE BUTTON
+  let btnNavbarMobile = document.querySelector("button.navbar-mobile-btn");
+  const navbarMoreButton = (dragger) => {
+    btnNavbarMobile?.addEventListener("click", () => {
+      dragger.reset();
+    });
+  };
+
+  let tl = createTimeline({
     // duration: 1200,
   });
   tl
@@ -127,14 +142,10 @@ import Polaroids from "../components/home/Polaroids.astro"
       onComplete: () => {
         //DRAGABLES
         polaroidCardsEl.forEach((cardEl) => {
-          let grabs = 0;
-          const dragPolaroids = createDraggable(cardEl, {
-            container: ".first",
-            onGrab: () => console.log(++grabs),
-          });
-          // dragPolaroids
-          //   .setX(utils.random(-100, 100))
-          //   .setY(utils.random(-100, 100));
+          const dragMe = dragPolaroids(cardEl);
+          navbarMoreButton(dragMe);
+
+          //reset from NAVBAR MOBILE
         });
       },
     });
