@@ -67,18 +67,21 @@ import Polaroids from "../components/home/Polaroids.astro";
     ".certification-title"
   ) as HTMLElement;
 
-  //DRAGGING FUNCTION
+  // Store all drag instances in an array
+  const dragInstances = [];
+
+  //DRAGGING FUNCTION --> dipanggil di onComplete animasi Polaroids
   let polaroidCardsEl = document.querySelectorAll(".polaroid-card");
   const dragPolaroids = (el) =>
     createDraggable(el, {
       container: ".first",
     });
 
-  //MORE BUTTON
+  //MORE BUTTON --> RESET dan BUKA MENU
   let btnNavbarMobile = document.querySelector("button.navbar-mobile-btn");
-  const navbarMoreButton = (dragger) => {
+  const navbarMoreButton = (draggingInstances) => {
     btnNavbarMobile?.addEventListener("click", () => {
-      dragger.reset();
+      draggingInstances.forEach((draggingInstance) => draggingInstance.reset());
     });
   };
 
@@ -143,10 +146,9 @@ import Polaroids from "../components/home/Polaroids.astro";
         //DRAGABLES
         polaroidCardsEl.forEach((cardEl) => {
           const dragMe = dragPolaroids(cardEl);
-          navbarMoreButton(dragMe);
-
-          //reset from NAVBAR MOBILE
-        });
+          dragInstances.push(dragMe); // Store the instance
+          navbarMoreButton(dragInstances); // Pass all instances
+        });``
       },
     });
 </script>
