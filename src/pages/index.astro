@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/home/Hero.astro";
 import Certification from "../components/home/Certification.astro";
+import Jobs from "../components/home/Jobs.astro"
 import Polaroids from "../components/home/Polaroids.astro";
 ---
 
@@ -19,25 +20,45 @@ import Polaroids from "../components/home/Polaroids.astro";
     padding: 40px
   .bottom-row
     display: flex
+    column-gap: 40px
     width: fit-content
-    flex-direction: column
+    flex-direction: row
     padding: 40px
+    @media (max-width: 1440px)
+      flex-direction: column
+      row-gap: 16px
     ul
       flex-direction: column
   .mobile-menu-overlay
     position: fixed
     width: 100vw
     height: 100vh
-    background-color: rgba(127 214 119/ 60%)
+    background-color: rgba(127 214 119/ 80%)
     // background-color: black
     backdrop-filter: blur(1px)
     z-index: 99999
     clip-path: circle(100% at 50% 50%)
+
+    display: flex
+    padding: 40px
+    flex-direction: column
+    justify-content: flex-end
+    p
+      font-size: 24px
+      @media (min-width: 1440px)
+        display: none
+
 </style>
 
 <Layout pageTitle="Rayyan Eka Putra | Security & Internet Engineer">
   <section class="first">
-    <div class="mobile-menu-overlay"></div>
+    <div class="mobile-menu-overlay">
+      <p><a href="https://www.linkedin.com/in/rayyan-eka-putra/">.linkedin</a></p>
+      <p><a href="https://www.instagram.com/rayyanekaputra">.instagram</a></p>
+      <p><a href="https://github.com/rayyanekaputra/">.github</a></p>
+      <p><a href="https://dribbble.com/rayyanekaputra/">.dribbble</a></p>
+      
+    </div>
     <div class="top-row">
       <Hero />
       <Navbar
@@ -48,14 +69,16 @@ import Polaroids from "../components/home/Polaroids.astro";
           },
           {
             name: ".instagram",
-            link: "https://www.instagram.com/rayyanekaputram",
+            link: "https://www.instagram.com/rayyanekaputra",
           },
           { name: ".github", link: "https://github.com/rayyanekaputra/" },
+          {name: ".dribbble", link: "https://dribbble.com/rayyanekaputra"}
         ]}
       />
     </div>
     <div class="bottom-row">
       <Certification />
+      <Jobs/>
     </div>
     <Polaroids />
   </section>
@@ -81,6 +104,11 @@ import Polaroids from "../components/home/Polaroids.astro";
   let certItemsEl = document.querySelectorAll(".cert-item");
   let certTitleEl = document.querySelector(
     ".certification-title"
+  ) as HTMLElement;
+
+  let jobItemsEl = document.querySelectorAll(".job-item");
+  let expTitleEl = document.querySelector(
+    ".experience-title"
   ) as HTMLElement;
 
   // Store all drag instances in an array, btw objects, array, dan functions kalau disimpan dalam variable, itu pass-by-reference
@@ -174,6 +202,28 @@ import Polaroids from "../components/home/Polaroids.astro";
           //remove satu2 njo kelas transparentna
           // console.log(certItemEl);
           certItemEl.classList.remove("transparent");
+        });
+      },
+    })
+    //MASUKKAN EXPERIENCE TITLE
+    .add(expTitleEl, {
+      opacity: 1,
+      delay: stagger(100),
+      ease: "inOutExpo",
+      onComplete: () => {
+        expTitleEl.classList.remove("transparent");
+      },
+    })
+    //MASUKKAN JOB
+    .add(jobItemsEl, {
+      opacity: 1,
+      delay: stagger(100),
+      ease: "inOutExpo",
+      onComplete: () => {
+        jobItemsEl.forEach((jobItemEl) => {
+          //remove satu2 njo kelas transparentna
+          // console.log(certItemEl);
+          jobItemEl.classList.remove("transparent");
         });
       },
     })
