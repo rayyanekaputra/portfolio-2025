@@ -30,21 +30,24 @@ const navs: Navs[] = Astro.props.navs || [
     align-items: center
     column-gap: 12px
     border-radius: 4px
-    background: radial-gradient(ellipse at top,#23895D 0%, #7FD677 100%)
+    background: var(--bg-color)
     border: none
     padding: 8px 12px
     height: fit-content
     font: inherit
-    font-weight: bold
-    color: #16553A
+    font-weight: 500
+    color: var(--text-primary)
     cursor: pointer
-    outline: solid 1px #23895D
+    outline: solid 1px var(--muted-color)
     user-select: none
-    box-shadow: 0px 0px 10px rgb(0 0 0 / 15%), inset 0 0.5px 0 1px rgb(255 255 255 / 15%)
-    transition: transform 0.1s // Smooth transitions
+    box-shadow: 0px 0px 10px rgb(0 0 0 / 30%)
+    transition: transform 0.1s, outline-color 0.15s, color 0.15s // Smooth transitions
     // Pressed state (active)
     &:active
       transform: scale(0.95) // Slight "push" effect
+    &:hover
+      outline-color: var(--text-primary)
+      color: var(--text-heading)
     @media (min-width: 1440px)
       display: none
 </style>
