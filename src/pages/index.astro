@@ -5,6 +5,7 @@ import Hero from "../components/home/Hero.astro";
 import Certification from "../components/home/Certification.astro";
 import Jobs from "../components/home/Jobs.astro";
 import Polaroids from "../components/home/Polaroids.astro";
+import Projects  from "../components/home/Projects.astro";
 ---
 
 <style lang="sass">
@@ -79,6 +80,7 @@ import Polaroids from "../components/home/Polaroids.astro";
     <div class="bottom-row">
       <Certification />
       <Jobs />
+      <Projects />
     </div>
     <Polaroids />
   </section>
@@ -109,6 +111,10 @@ import Polaroids from "../components/home/Polaroids.astro";
 
   let jobItemsEl = document.querySelectorAll(".job-item");
   let expTitleEl = document.querySelector(".experience-title") as HTMLElement;
+  
+  let projectItemsEl = document.querySelectorAll(".project-item");
+  let projectTitleEl = document.querySelector(".project-title") as HTMLElement;
+
 
   // Store all drag instances in an array, btw objects, array, dan functions kalau disimpan dalam variable, itu pass-by-reference
   const dragInstances = [];
@@ -117,7 +123,7 @@ import Polaroids from "../components/home/Polaroids.astro";
   let polaroidCardsEl = document.querySelectorAll(".polaroid-card");
   const dragPolaroids = (el) =>
     createDraggable(el, {
-      container: ".first",
+      // container: ".first", //disabling this so the polaroids can be pushed off the side
     });
 
   let isMobileMenuOpen: boolean = false;
@@ -226,6 +232,29 @@ import Polaroids from "../components/home/Polaroids.astro";
         });
       },
     })
+    //MASUKKAN PROJECTS TITLE
+    .add(projectTitleEl, {
+      opacity: 1,
+      delay: stagger(100),
+      ease: "inOutExpo",
+      onComplete: () => {
+        projectTitleEl.classList.remove("transparent");
+      },
+    })
+    //MASUKKAN PROJECT
+    .add(projectItemsEl, {
+      opacity: 1,
+      delay: stagger(100),
+      ease: "inOutExpo",
+      onComplete: () => {
+        projectItemsEl.forEach((projectItemEl) => {
+          //remove satu2 njo kelas transparentna
+          // console.log(certItemEl);
+          projectItemEl.classList.remove("transparent");
+        });
+      },
+    })
+    
     //POLAROIDS MUNCUL
     .add(polaroidCardsEl, {
       opacity: 1,

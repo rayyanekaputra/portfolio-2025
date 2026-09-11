@@ -1,0 +1,23 @@
+---
+const projects = {
+    "+ strukfoto / canvas / open-sourced":"https://strukfoto.rayyanekaputra.com",
+    "+ keepkeep / canvas / open-sourced":"https://keepkeep.rayyanekaputra.com",
+    "+ scriffle / automation / sector hackathon 2026":"",
+    "+ liatliat / networking / open-sourced":"https://github.com/rayyanekaputra/liatliat"
+    };
+---
+
+<p class="project-title transparent">project experience:</p>
+<ul>
+    {Object.entries(projects).map(([projectName, projectLink]) => (
+        <li class="project-item transparent">
+            {projectLink ? (
+                <a href={projectLink} target="_blank" rel="noopener noreferrer">
+                    <p>{projectName}</p>
+                </a>
+            ) : (
+                <p>{projectName}</p>
+            )}
+        </li>
+    ))}
+</ul>
