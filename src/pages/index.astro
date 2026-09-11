@@ -1,11 +1,9 @@
 ---
-
-
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/home/Hero.astro";
 import Certification from "../components/home/Certification.astro";
-import Jobs from "../components/home/Jobs.astro"
+import Jobs from "../components/home/Jobs.astro";
 import Polaroids from "../components/home/Polaroids.astro";
 ---
 
@@ -49,17 +47,17 @@ import Polaroids from "../components/home/Polaroids.astro";
       font-size: 24px
       @media (min-width: 1440px)
         display: none
-
 </style>
 
 <Layout pageTitle="rayyan eka putra | security and internet engineer">
   <section class="first">
     <div class="mobile-menu-overlay">
-      <p><a href="https://www.linkedin.com/in/rayyan-eka-putra/">.linkedin</a></p>
+      <p>
+        <a href="https://www.linkedin.com/in/rayyan-eka-putra/">.linkedin</a>
+      </p>
       <p><a href="https://www.instagram.com/rayyanekaputra">.instagram</a></p>
       <p><a href="https://github.com/rayyanekaputra/">.github</a></p>
       <p><a href="https://dribbble.com/rayyanekaputra/">.dribbble</a></p>
-      
     </div>
     <div class="top-row">
       <Hero />
@@ -74,13 +72,13 @@ import Polaroids from "../components/home/Polaroids.astro";
             link: "https://www.instagram.com/rayyanekaputra",
           },
           { name: ".github", link: "https://github.com/rayyanekaputra/" },
-          {name: ".dribbble", link: "https://dribbble.com/rayyanekaputra"}
+          { name: ".dribbble", link: "https://dribbble.com/rayyanekaputra" },
         ]}
       />
     </div>
     <div class="bottom-row">
       <Certification />
-      <Jobs/>
+      <Jobs />
     </div>
     <Polaroids />
   </section>
@@ -100,19 +98,17 @@ import Polaroids from "../components/home/Polaroids.astro";
   TIMELINE ANIMATION FOR HOME
   */
   let mobileMenuOverlay = document.querySelector(
-    ".mobile-menu-overlay"
+    ".mobile-menu-overlay",
   ) as HTMLElement;
   let loadingTextEl = document.querySelector("#loading-text") as HTMLElement; //as HTMLElement gara2 typescript, baekji kalau tanpa itu
   let heroDescEl = document.querySelector(".hero-desc") as HTMLElement;
   let certItemsEl = document.querySelectorAll(".cert-item");
   let certTitleEl = document.querySelector(
-    ".certification-title"
+    ".certification-title",
   ) as HTMLElement;
 
   let jobItemsEl = document.querySelectorAll(".job-item");
-  let expTitleEl = document.querySelector(
-    ".experience-title"
-  ) as HTMLElement;
+  let expTitleEl = document.querySelector(".experience-title") as HTMLElement;
 
   // Store all drag instances in an array, btw objects, array, dan functions kalau disimpan dalam variable, itu pass-by-reference
   const dragInstances = [];
@@ -167,7 +163,7 @@ import Polaroids from "../components/home/Polaroids.astro";
         delay: 400,
         onComplete: () => heroDescEl.classList.remove("display-none"),
       },
-      "<<"
+      "<<",
     )
     // //HAPUS LOADING
     .add(loadingTextEl, {
