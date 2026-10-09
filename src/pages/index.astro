@@ -7,6 +7,7 @@ import Jobs from "../components/home/Jobs.astro";
 import Polaroids from "../components/home/Polaroids.astro";
 import Projects  from "../components/home/Projects.astro";
 import Clients from "../components/home/Clients.astro";
+import Grain from "../components/Grain.astro";
 ---
 
 <style lang="sass">
@@ -97,6 +98,7 @@ import Clients from "../components/home/Clients.astro";
     <div class="clients-row">
       <Clients />
     </div>
+    <Grain />
     <Polaroids />
   </section>
 </Layout>
@@ -110,6 +112,17 @@ import Clients from "../components/home/Clients.astro";
     utils,
     createDraggable,
   } from "animejs";
+  import LocomotiveScroll from "locomotive-scroll";
+
+  //SMOOTH SCROLL (locomotive v5 = lenis). autoStart false --> scroll terkunci selama intro, start() pas polaroids muncul
+  const locoScroll = new LocomotiveScroll({ autoStart: false });
+  //lenis cuma ukur ulang tinggi halaman kalau ukuran elemen berubah, transform (geser polaroid) tidak kehitung --> ukur manual
+  const refreshDelay = 600; //ms tunggu sebelum ukur ulang, biar tidak kaget pas polaroid dilempar bolak-balik
+  let refreshTimer;
+  const refreshScrollHeight = () => {
+    clearTimeout(refreshTimer); //lempar lagi sebelum waktunya --> hitung ulang dari awal
+    refreshTimer = setTimeout(() => locoScroll.lenisInstance?.resize(), refreshDelay);
+  };
 
   //RITME STAGGER ala motion graphic: jarak antar item lambat - cepat sekali - cepat - lambat
   //(ini ngatur delay, bukan posisi. angka ke-3 & ke-4 = seberapa halus ujungnya)
@@ -150,6 +163,7 @@ import Clients from "../components/home/Clients.astro";
   const dragPolaroids = (el) =>
     createDraggable(el, {
       // container: ".first", //disabling this so the polaroids can be pushed off the side
+      onSettle: refreshScrollHeight, //polaroid dilempar ke bawah --> halaman bisa lebih tinggi
     });
 
   let isMobileMenuOpen: boolean = false;
@@ -159,6 +173,7 @@ import Clients from "../components/home/Clients.astro";
       clipPath: `circle(${isMobileMenuOpen ? "0%" : "100%"} at 50% 50%)`,
       ease: "inOutExpo",
     });
+    isMobileMenuOpen ? locoScroll.start() : locoScroll.stop(); //kunci scroll selama menu terbuka
     isMobileMenuOpen = !isMobileMenuOpen;
   };
 
@@ -308,6 +323,7 @@ import Clients from "../components/home/Clients.astro";
           const dragMe = dragPolaroids(cardEl);
           dragInstances.push(dragMe); // Store the instance's reference
         });
+        locoScroll.start(); //intro selesai --> boleh scroll
       },
     }, overlapPrev);
   navbarMoreButton(dragInstances); // Pass all instances
@@ -377,7 +393,10 @@ import Clients from "../components/home/Clients.astro";
       duration: 900,
       onUpdate: () =>
         proxies.forEach((p, i) => dragInstances[i].setX(p.x).setY(p.y)),
-      onComplete: () => (isStacking = false),
+      onComplete: () => {
+        isStacking = false;
+        refreshScrollHeight(); //tumpukan pindah ke atas --> halaman bisa lebih pendek
+      },
     });
   };
   let homeNameEl = document.querySelector(".home-name");

@@ -11,6 +11,7 @@
   "dependencies": {
     "animejs": "^4.0.0",
     "astro": "^5.5.6",
+    "locomotive-scroll": "^5.0.1",
     "sass": "^1.86.2"
   },
   "devDependencies": {

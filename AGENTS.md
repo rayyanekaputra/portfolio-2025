@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Personal portfolio for Rayyan Eka Putra, live at https://rayyanekaputra.com. It's one animated page built with Astro 5, Sass (indented `.sass` syntax), and anime.js v4. The owner wrote it by hand, so keep their style and structure. Don't do big rewrites unless they ask for one.
+Personal portfolio for Rayyan Eka Putra, live at https://rayyanekaputra.com. It's one animated page built with Astro 5, Sass (indented `.sass` syntax), anime.js v4, and Locomotive Scroll v5. The owner wrote it by hand, so keep their style and structure. Don't do big rewrites unless they ask for one.
 
 ## Commands
 
@@ -27,6 +27,7 @@ src/
     home/Projects.astro       projects data object + list
     home/Clients.astro        clients data object + 3-column list (own full-width .clients-row below .bottom-row)
     home/Polaroids.astro      8 absolutely positioned, draggable photo cards
+    Grain.astro               fixed SVG-noise grain overlay (z-index 0, rendered right before <Polaroids />)
   scripts/typer.js            typing effect, the only script in use
   styles/
     global.sass               reset + base typography, .transparent / .display-none helpers
@@ -47,6 +48,8 @@ public/                       fonts, photos/frame01-08.png, icons/, favicons, og
 - **Polaroids** become draggable (`createDraggable`) after they fade in. The mobile "more" button (`button.navbar-mobile-btn`) toggles the `.mobile-menu-overlay` clip-path circle. It no longer resets the drag instances (that line is commented out in `handleMobileClick`).
   - The draggables have no `container` (it's commented out), so cards can be pushed off the side of the screen. `section.first` is `position: relative` + `overflow-x: clip` so off-screen cards are cut off instead of causing horizontal scroll; `html` also has `overflow-x: clip` in `global.sass` because mobile browsers ignore `overflow-x` set only on `body`. Use `clip`, not `hidden`, so cards can still hang off vertically.
 - **Name click → polaroid pile**: `rayyanekaputra` in the hero heading is `span.home-name` (hover: `$light-color` text + faint green `text-shadow`, styled in `Hero.astro`). Clicking it runs `stackPolaroids` in `index.astro`: cards pile at the centroid of their home positions with an 8px downward cascade (`stackOffset`), then `movePileToTop` slides the pile into the gap between the header (`.splash`) and the navbar (`ul.navbar-ul`, or `button.navbar-mobile-btn` at 1440px and below), top-aligned with the header. Both moves use 900ms `inOutExpo` and `stagger(60, staggerRhythm)`. Cards are moved with the draggables' `setX`/`setY` (not CSS) so drag state stays in sync. It does nothing until the polaroids are draggable, and `isStacking` blocks clicks while it runs. Renaming `.home-name`, `.splash`, or `.navbar-ul` breaks it.
+- **Grain**: `Grain.astro` is a fixed, oversized `.grain` div with an inline SVG `feTurbulence` background and a `steps()` jitter animation (off under `prefers-reduced-motion`). It's `z-index: 0` with `pointer-events: none` and sits in the DOM just before `<Polaroids />`, so it paints over the unpositioned text but under the polaroids (z 0–7, later in the DOM) and the mobile overlay/navbar button (99999). Keep that DOM order.
+- **Smooth scroll**: Locomotive Scroll v5 (built on Lenis, native scroll) is created at the top of the `index.astro` script as `locoScroll` with `autoStart: false`, so wheel scrolling stays locked during the intro. The polaroid step's `onComplete` calls `locoScroll.start()`, and `openMobileMenuAnim` calls `stop()`/`start()` so the page can't scroll behind the open menu. Its CSS is imported in `Layout.astro`. Lenis only re-measures page height when an element's size changes, not on transforms, so `refreshScrollHeight()` (`lenisInstance.resize()`, debounced by `refreshDelay`) runs in the draggables' `onSettle` and after the name-click pile. Don't give `body` its own `overflow` (it's commented out in `global.sass`): because `html` has `overflow-x: clip`, that turns `body` into a separate scroll container, and the wheel stops working because Lenis scrolls the window. Don't put `data-scroll-speed` on `.polaroid-card`: its transform would fight the draggable's `x`/`y`.
 - **Typer**: `typer.js` runs on load. It finds `.typer` elements (configured with `data-words`, `data-delay`, `data-colors`, and `data-delete-delay`) and `.cursor[data-owner]` elements. `index.astro` loads it with a plain `<script src>`.
 - **Responsive**: the only breakpoint is `1440px`. At 1440px and below, the desktop navbar is hidden, the mobile button appears, fonts get smaller, and the polaroids stack in the center.
 - Astro scopes `<style>` to the file it's in. Styles in `index.astro` don't reach markup rendered inside a child component, so put those styles in the component (as `Clients.astro`, `Hero.astro`, and `Polaroids.astro` do).
@@ -54,6 +57,7 @@ public/                       fonts, photos/frame01-08.png, icons/, favicons, og
 
 ## Gotchas
 
+- Open issue: throwing a polaroid back up while scrolled down shrinks the page at once, and the browser jumps the view before the debounced `refreshScrollHeight` runs. Possible fix: only let the scroll height grow, and shrink it on reset (name-click pile).
 - `src/scripts/centralAnimationTimeline.js`, `typewriter.js`, and `typewriter2.js` are unused leftovers. `centralAnimationTimeline.js` uses the anime.js v3 API, which this project no longer uses.
 - `_colors.sass` previously had no trailing newline; appending with `echo >>` glued lines together. Check the file ends with a newline.
 - `Hero.astro` has a stray closing `</script>` at the end.
