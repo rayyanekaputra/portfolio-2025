@@ -16,7 +16,7 @@ const clients = {
     "+ stylenxt (2024) / foundstrap studio / web designs.":"https://dribbble.com/shots/24903611-STYLENXT-Augmented-Reality-Fashion-Commerce",
     "+ natur (2024) / foundstrap studio / web designs.":"https://dribbble.com/shots/24903334-Natur-Eco-friendly-Products",
     "+ hanami (2024) / foundstrap studio / web designs.":"https://dribbble.com/shots/24903057-Hanami-Bloom-Flower-Shop-Website",
-    "+ finku (2021-2023) / finku / web designs.":"https://finku.id/",
+    "+ finku (2021-2023) / finku / webflow development.":"https://finku.id/",
     "+ ubicon (2022) / unhas / web development.":"https://ubicon.unhas.ac.id/"
 };
 ---
@@ -26,34 +26,33 @@ const clients = {
     display: flex
     flex-direction: column
     width: 100%
-  li, li a
+  li
     display: grid
     grid-template-columns: repeat(3, 1fr)
     width: 100%
-  li a
-    grid-column: 1 / -1
+  li p
+    justify-self: start
   p:nth-child(2)
-    text-align: center
+    text-align: left
   p:nth-child(3)
     text-align: right
+    justify-self: end
 </style>
 
 <p class="client-title transparent">clients:</p>
 <ul>
     {Object.entries(clients).map(([clientName, clientLink]) => {
         const [name, middle, field] = clientName.replace(/\.$/, "").split(" / ");
-        const cols = (
-            <>
-                <p>{name}</p>
-                <p>/ {middle} /</p>
-                <p>{field}</p>
-            </>
-        );
+        // link cuma di teks, bukan di row --> background row tidak bisa diklik
+        // kolom 2 & 3 tabindex -1 biar tab cuma sekali per row
+        const linked = (text, i) => clientLink ? (
+            <a href={clientLink} target="_blank" rel="noopener noreferrer" tabindex={i ? -1 : undefined}>{text}</a>
+        ) : text;
         return (
             <li class="client-item transparent">
-                {clientLink ? (
-                    <a href={clientLink} target="_blank" rel="noopener noreferrer">{cols}</a>
-                ) : cols}
+                <p>{linked(name, 0)}</p>
+                <p>{linked(`/ ${middle} /`, 1)}</p>
+                <p>{linked(field, 2)}</p>
             </li>
         );
     })}

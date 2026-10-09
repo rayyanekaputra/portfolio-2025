@@ -114,8 +114,8 @@ import Grain from "../components/Grain.astro";
   } from "animejs";
   import LocomotiveScroll from "locomotive-scroll";
 
-  //SMOOTH SCROLL (locomotive v5 = lenis). autoStart false --> scroll terkunci selama intro, start() pas polaroids muncul
-  const locoScroll = new LocomotiveScroll({ autoStart: false });
+  //SMOOTH SCROLL (locomotive v5 = lenis). autoStart true --> boleh scroll selama intro
+  const locoScroll = new LocomotiveScroll({ autoStart: true });
   //lenis cuma ukur ulang tinggi halaman kalau ukuran elemen berubah, transform (geser polaroid) tidak kehitung --> ukur manual
   const refreshDelay = 600; //ms tunggu sebelum ukur ulang, biar tidak kaget pas polaroid dilempar bolak-balik
   let refreshTimer;
