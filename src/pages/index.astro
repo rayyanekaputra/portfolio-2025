@@ -108,6 +108,10 @@ import Clients from "../components/home/Clients.astro";
     createDraggable,
   } from "animejs";
 
+  //RITME STAGGER ala motion graphic: jarak antar item lambat - cepat sekali - cepat - lambat
+  //(ini ngatur delay, bukan posisi. angka ke-3 & ke-4 = seberapa halus ujungnya)
+  const staggerRhythm = { ease: "cubicBezier(0, 0.5, 0.8, 0.4)" };
+
   /*
   TIMELINE ANIMATION FOR HOME
   */
@@ -215,7 +219,7 @@ import Clients from "../components/home/Clients.astro";
     //MASUKKAN CERTIFICATIONS
     .add(certItemsEl, {
       opacity: 1,
-      delay: stagger(100),
+      delay: stagger(100, staggerRhythm),
       ease: "inOutExpo",
       onComplete: () => {
         certItemsEl.forEach((certItemEl) => {
@@ -237,7 +241,7 @@ import Clients from "../components/home/Clients.astro";
     //MASUKKAN JOB
     .add(jobItemsEl, {
       opacity: 1,
-      delay: stagger(100),
+      delay: stagger(100, staggerRhythm),
       ease: "inOutExpo",
       onComplete: () => {
         jobItemsEl.forEach((jobItemEl) => {
@@ -259,7 +263,7 @@ import Clients from "../components/home/Clients.astro";
     //MASUKKAN PROJECT
     .add(projectItemsEl, {
       opacity: 1,
-      delay: stagger(100),
+      delay: stagger(100, staggerRhythm),
       ease: "inOutExpo",
       onComplete: () => {
         projectItemsEl.forEach((projectItemEl) => {
@@ -281,7 +285,7 @@ import Clients from "../components/home/Clients.astro";
     //MASUKKAN CLIENT
     .add(clientItemsEl, {
       opacity: 1,
-      delay: stagger(100),
+      delay: stagger(100, staggerRhythm),
       ease: "inOutExpo",
       onComplete: () => {
         clientItemsEl.forEach((clientItemEl) => {
@@ -293,7 +297,7 @@ import Clients from "../components/home/Clients.astro";
     //POLAROIDS MUNCUL
     .add(polaroidCardsEl, {
       opacity: 1,
-      delay: stagger(100),
+      delay: stagger(100, staggerRhythm),
       ease: "inOutExpo",
       onComplete: () => {
         //POLAROIDS DRAGGABLE
