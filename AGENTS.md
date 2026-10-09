@@ -25,7 +25,7 @@ src/
     home/Certification.astro  certs data object + list
     home/Jobs.astro           jobs data object + list
     home/Projects.astro       projects data object + list
-    home/Clients.astro        clients data object + list (own full-width .clients-row below .bottom-row)
+    home/Clients.astro        clients data object + 3-column list (own full-width .clients-row below .bottom-row)
     home/Polaroids.astro      8 absolutely positioned, draggable photo cards
   scripts/typer.js            typing effect, the only script in use
   styles/
@@ -38,12 +38,15 @@ public/                       fonts, photos/frame01-08.png, icons/, favicons, og
 ## How the page works
 
 - **Content lives in the components as data.** Certifications, jobs, and projects are each a `{ "+ label / org (years).": "url" }` object. An empty string means the entry renders without a link. Labels are lowercase, start with `+ `, and end with `.`. Use the same format for new entries.
+  - Clients use the same object, but each label has three parts separated by ` / `: `"+ client (2023) / middle / field."`. `Clients.astro` splits it into a 3-column grid (left, center with `/ … /` added around it, right-aligned). A link makes the whole line clickable.
 - **The intro animation hides content until it reveals it.** Elements start with the class `transparent` (opacity 0). The `createTimeline` in `src/pages/index.astro` fades them in step by step: mobile overlay closes → `#loading-text` counts to "initializing 100%" → `.hero-desc` → cert title/items → experience title/items → project title/items → client title/items → polaroids. Each step's `onComplete` removes `transparent`.
+  - Each fade uses `ease: "inOutExpo"`. The item lists (certs, jobs, projects, clients, polaroids) use `delay: stagger(100, staggerRhythm)`. `staggerRhythm` is defined once near the top of the script as a `cubicBezier` ease, so gaps between items go slow → very fast → fast → slow. It shapes the delays, not the motion, so it works like the inverse of a normal ease-in-out. Tune the rhythm there, not in each step.
   - Each new section needs the `transparent` class, a `querySelector` in `index.astro`, and its own `.add(...)` step. Otherwise it stays invisible or appears without the animation.
   - The timeline finds elements by these class names: `.cert-item`, `.certification-title`, `.job-item`, `.experience-title`, `.project-item`, `.project-title`, `.client-item`, `.client-title`, `.polaroid-card`, `.hero-desc`, `#loading-text`, `.mobile-menu-overlay`. Renaming one breaks the animation.
 - **Polaroids** become draggable (`createDraggable`) after they fade in. The mobile "more" button (`button.navbar-mobile-btn`) resets every drag instance and toggles the `.mobile-menu-overlay` clip-path circle.
 - **Typer**: `typer.js` runs on load. It finds `.typer` elements (configured with `data-words`, `data-delay`, `data-colors`, and `data-delete-delay`) and `.cursor[data-owner]` elements. `index.astro` loads it with a plain `<script src>`.
 - **Responsive**: the only breakpoint is `1440px`. At 1440px and below, the desktop navbar is hidden, the mobile button appears, fonts get smaller, and the polaroids stack in the center.
+- Astro scopes `<style>` to the file it's in. Styles in `index.astro` don't reach markup rendered inside a child component, so put those styles in the component (as `Clients.astro`, `Hero.astro`, and `Polaroids.astro` do).
 - `global.sass` sets every `div` to `display: flex`. Keep that in mind when building layouts.
 
 ## Gotchas
