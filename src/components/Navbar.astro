@@ -30,15 +30,15 @@ const navs: Navs[] = Astro.props.navs || [
     align-items: center
     column-gap: 12px
     border-radius: 4px
-    background: radial-gradient(ellipse at top,#23895D 0%, #7FD677 100%)
+    background: radial-gradient(ellipse at top, var(--btn-top) 0%, var(--btn-bottom) 100%)
     border: none
     padding: 8px 12px
     height: fit-content
     font: inherit
     font-weight: bold
-    color: #16553A
+    color: var(--strong)
     cursor: pointer
-    outline: solid 1px #23895D
+    outline: solid 1px var(--btn-outline)
     user-select: none
     box-shadow: 0px 0px 10px rgb(0 0 0 / 15%), inset 0 0.5px 0 1px rgb(255 255 255 / 15%)
     transition: transform 0.1s // Smooth transitions
@@ -47,8 +47,13 @@ const navs: Navs[] = Astro.props.navs || [
       transform: scale(0.95) // Slight "push" effect
     @media (min-width: 1440px)
       display: none
+  // dark: spread 1px + outline jadi garis dobel di atas, jadi highlight-nya cuma garis tipis di atas
+  :global(html.dark) button.navbar-mobile-btn
+    box-shadow: 0px 0px 10px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 8%)
 </style>
-<button class="navbar-mobile-btn"><p>more</p><img src="/icons/more_ic.svg" alt="more icon"></button>
+<button class="navbar-mobile-btn"><p>more</p><svg aria-hidden="true" width="4" height="16" viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 16C1.45 16 0.979335 15.8043 0.588002 15.413C0.196669 15.0217 0.000668362 14.5507 1.69491e-06 14C-0.000664972 13.4493 0.195335 12.9787 0.588002 12.588C0.980669 12.1973 1.45134 12.0013 2 12C2.54867 11.9987 3.01967 12.1947 3.413 12.588C3.80634 12.9813 4.002 13.452 4 14C3.998 14.548 3.80234 15.019 3.413 15.413C3.02367 15.807 2.55267 16.0027 2 16ZM2 10C1.45 10 0.979335 9.80434 0.588002 9.41301C0.196669 9.02167 0.000668362 8.55067 1.69491e-06 8.00001C-0.000664972 7.44934 0.195335 6.97867 0.588002 6.58801C0.980669 6.19734 1.45134 6.00134 2 6.00001C2.54867 5.99867 3.01967 6.19467 3.413 6.58801C3.80634 6.98134 4.002 7.45201 4 8.00001C3.998 8.54801 3.80234 9.01901 3.413 9.41301C3.02367 9.80701 2.55267 10.0027 2 10ZM2 4.00001C1.45 4.00001 0.979335 3.80434 0.588002 3.41301C0.196669 3.02167 0.000668362 2.55067 1.69491e-06 2.00001C-0.000664972 1.44934 0.195335 0.978673 0.588002 0.588007C0.980669 0.19734 1.45134 0.00134009 2 6.75676e-06C2.54867 -0.00132658 3.01967 0.194673 3.413 0.588007C3.80634 0.98134 4.002 1.45201 4 2.00001C3.998 2.54801 3.80234 3.01901 3.413 3.41301C3.02367 3.80701 2.55267 4.00267 2 4.00001Z" fill="currentColor"/>
+</svg> <!-- inline biar ikut warna teks (dark mode) --></button>
 <ul class="navbar-ul">
   {
     navs.map((nav) => (

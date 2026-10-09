@@ -51,7 +51,7 @@ import Grain from "../components/Grain.astro";
     position: fixed
     width: 100vw
     height: 100vh
-    background-color: rgba(127 214 119/ 80%)
+    background-color: var(--overlay)
     // background-color: black
     backdrop-filter: blur(1px)
     z-index: 99999
@@ -223,6 +223,7 @@ import Grain from "../components/Grain.astro";
       onComplete: () => {
         // console.log(heroDescEl);
         loadingTextEl.classList.add("transparent", "display-none");
+        document.documentElement.classList.add("dark"); //fade ke dark mode (lihat token di global.sass)
       },
     })
     //MASUKKAN HERO DESC

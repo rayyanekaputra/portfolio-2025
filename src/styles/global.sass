@@ -6,8 +6,24 @@
     box-sizing: border-box
     padding: 0
     margin: 0
+// TOKENS: earthy dulu, html.dark (ditambah di index.astro) fade ke dark mode
+// @property biar custom property-nya bisa di-transition (sass var tidak bisa, sudah fix pas build)
+$theme-light: (bg: colors.$bg-color, fg: colors.$prim-color, strong: colors.$prim-color, shadow: rgb(0 0 0 / 10%), light: colors.$light-color, glow: rgba(colors.$prim-color, 0.35), accent: #23895D, btn-top: #23895D, btn-bottom: #7FD677, btn-outline: #23895D, overlay: rgba(127 214 119 / 80%))
+$theme-dark: (bg: colors.$dark-bg-color, fg: colors.$dark-prim-color, strong: colors.$dark-strong-color, shadow: rgb(0 0 0 / 45%), light: colors.$dark-light-color, glow: rgba(colors.$dark-light-color, 0.15), accent: colors.$dark-prim-color, btn-top: colors.$dark-btn-top, btn-bottom: colors.$dark-btn-bottom, btn-outline: colors.$dark-btn-outline, overlay: rgba(colors.$dark-bg-color, 0.8))
+@each $name, $value in $theme-light
+    @property --#{$name}
+        syntax: '<color>'
+        inherits: true
+        initial-value: $value
 html
     overflow-x: clip
+    @each $name, $value in $theme-light
+        --#{$name}: #{$value}
+    transition: --bg 1.2s, --fg 1.2s, --strong 1.2s, --shadow 1.2s, --light 1.2s, --glow 1.2s, --accent 1.2s, --btn-top 1.2s, --btn-bottom 1.2s, --btn-outline 1.2s, --overlay 1.2s
+    transition-timing-function: cubic-bezier(0.87, 0, 0.13, 1) //kurang lebih inOutExpo
+    &.dark
+        @each $name, $value in $theme-dark
+            --#{$name}: #{$value}
 body
     display: block
     font-family: 'Inter Tight';
@@ -15,8 +31,8 @@ body
     @media (max-width: 1440px)
         font-size: 16px
     //letter-spacing: -1.2px
-    background-color: colors.$bg-color
-    color: colors.$prim-color !important
+    background-color: var(--bg)
+    color: var(--fg) !important
     // overflow-x: hidden //bikin body jadi scroll container sendiri --> locomotive (scroll window) macet. html sudah overflow-x: clip
 .transparent
     opacity: 0
@@ -37,10 +53,10 @@ div
     display: flex
 a
     text-decoration: underline
-    color: colors.$prim-color
+    color: var(--fg)
     transition: color 0.25s ease, text-shadow 0.25s ease
     &:hover
-        color: colors.$light-color
-        text-shadow: 0 0 8px rgba(colors.$prim-color, 0.35)
+        color: var(--light)
+        text-shadow: 0 0 8px var(--glow)
 img
     pointer-events: none

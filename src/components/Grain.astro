@@ -17,6 +17,35 @@
     @media (prefers-reduced-motion: reduce)
       animation: none
 
+  // dark mode: soft-light hampir tidak kelihatan di abu gelap, jadi overlay + sedikit lebih kuat
+  // grain-dark-in: grain earthy pudar selama transisi warna (1.2s), baru grain gelap muncul sesudahnya
+  :global(html.dark) .grain
+    mix-blend-mode: overlay
+    opacity: 1
+    filter: contrast(1.2) //naikkan kalau mau lebih kasar
+    animation: grain-shift 0.8s steps(8) infinite, grain-dark-in 2.4s ease-in-out both
+    @media (prefers-reduced-motion: reduce)
+      animation: grain-dark-in 2.4s ease-in-out both
+
+  // blend mode tidak bisa di-fade, jadi ditukar pas opacity 0 (50%)
+  @keyframes grain-dark-in
+    0%
+      opacity: 1
+      mix-blend-mode: soft-light
+      filter: none
+    50%
+      opacity: 0
+      mix-blend-mode: soft-light
+      filter: none
+    50.1%
+      opacity: 0
+      mix-blend-mode: overlay
+      filter: contrast(1.2)
+    100%
+      opacity: 1
+      mix-blend-mode: overlay
+      filter: contrast(1.2)
+
   @keyframes grain-shift
     0%
       transform: translate(0, 0)
