@@ -22,13 +22,19 @@
     padding: 0
     margin: 0
     color: colors.$prim-color
+  .home-name
+    cursor: pointer
+    transition: color 0.25s ease, text-shadow 0.25s ease
+    &:hover
+      color: colors.$light-color
+      text-shadow: 0 0 8px rgba(colors.$prim-color, 0.35)
   #desc-typer
     font-weight: 400
   .splash-text-container
     display: flex
 </style>
 <div class="splash">
-  <h2>/home/rayyanekaputra</h2>
+  <h2>/home/<span class="home-name" title="stack the polaroids">rayyanekaputra</span></h2>
   <div class="splash-text-container">
     <h2 id="loading-text" class="splash-desc"></h2>
     <h2 class="hero-desc display-none transparent">

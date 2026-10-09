@@ -308,5 +308,11 @@ import Clients from "../components/home/Clients.astro";
       },
     }, overlapPrev);
   navbarMoreButton(dragInstances); // Pass all instances
+
+  //KLIK NAMA --> SUSUN ULANG POLAROIDS (desktop & mobile)
+  let homeNameEl = document.querySelector(".home-name");
+  homeNameEl?.addEventListener("click", () =>
+    dragInstances.forEach((dragInstance) => dragInstance.reset()),
+  );
 </script>
 <script src="../scripts/typer.js"></script>
