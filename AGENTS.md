@@ -25,6 +25,7 @@ src/
     home/Certification.astro  certs data object + list
     home/Jobs.astro           jobs data object + list
     home/Projects.astro       projects data object + list
+    home/Clients.astro        clients data object + list (own full-width .clients-row below .bottom-row)
     home/Polaroids.astro      8 absolutely positioned, draggable photo cards
   scripts/typer.js            typing effect, the only script in use
   styles/
@@ -37,9 +38,9 @@ public/                       fonts, photos/frame01-08.png, icons/, favicons, og
 ## How the page works
 
 - **Content lives in the components as data.** Certifications, jobs, and projects are each a `{ "+ label / org (years).": "url" }` object. An empty string means the entry renders without a link. Labels are lowercase, start with `+ `, and end with `.`. Use the same format for new entries.
-- **The intro animation hides content until it reveals it.** Elements start with the class `transparent` (opacity 0). The `createTimeline` in `src/pages/index.astro` fades them in step by step: mobile overlay closes → `#loading-text` counts to "initializing 100%" → `.hero-desc` → cert title/items → experience title/items → project title/items → polaroids. Each step's `onComplete` removes `transparent`.
+- **The intro animation hides content until it reveals it.** Elements start with the class `transparent` (opacity 0). The `createTimeline` in `src/pages/index.astro` fades them in step by step: mobile overlay closes → `#loading-text` counts to "initializing 100%" → `.hero-desc` → cert title/items → experience title/items → project title/items → client title/items → polaroids. Each step's `onComplete` removes `transparent`.
   - Each new section needs the `transparent` class, a `querySelector` in `index.astro`, and its own `.add(...)` step. Otherwise it stays invisible or appears without the animation.
-  - The timeline finds elements by these class names: `.cert-item`, `.certification-title`, `.job-item`, `.experience-title`, `.project-item`, `.project-title`, `.polaroid-card`, `.hero-desc`, `#loading-text`, `.mobile-menu-overlay`. Renaming one breaks the animation.
+  - The timeline finds elements by these class names: `.cert-item`, `.certification-title`, `.job-item`, `.experience-title`, `.project-item`, `.project-title`, `.client-item`, `.client-title`, `.polaroid-card`, `.hero-desc`, `#loading-text`, `.mobile-menu-overlay`. Renaming one breaks the animation.
 - **Polaroids** become draggable (`createDraggable`) after they fade in. The mobile "more" button (`button.navbar-mobile-btn`) resets every drag instance and toggles the `.mobile-menu-overlay` clip-path circle.
 - **Typer**: `typer.js` runs on load. It finds `.typer` elements (configured with `data-words`, `data-delay`, `data-colors`, and `data-delete-delay`) and `.cursor[data-owner]` elements. `index.astro` loads it with a plain `<script src>`.
 - **Responsive**: the only breakpoint is `1440px`. At 1440px and below, the desktop navbar is hidden, the mobile button appears, fonts get smaller, and the polaroids stack in the center.

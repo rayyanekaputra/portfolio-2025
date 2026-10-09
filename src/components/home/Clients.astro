@@ -1,0 +1,45 @@
+---
+// format: "+ client (year) / middle / field." -> split ke 3 kolom
+const clients = {
+    "+ client a (2023) / afteranother / web design.":"",
+    "+ client b (2025) / placeholder / branding.":""
+    };
+---
+
+<style lang="sass">
+  ul
+    display: flex
+    flex-direction: column
+    width: 100%
+  li, li a
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    width: 100%
+  li a
+    grid-column: 1 / -1
+  p:nth-child(2)
+    text-align: center
+  p:nth-child(3)
+    text-align: right
+</style>
+
+<p class="client-title transparent">clients:</p>
+<ul>
+    {Object.entries(clients).map(([clientName, clientLink]) => {
+        const [name, middle, field] = clientName.replace(/\.$/, "").split(" / ");
+        const cols = (
+            <>
+                <p>{name}</p>
+                <p>/ {middle} /</p>
+                <p>{field}</p>
+            </>
+        );
+        return (
+            <li class="client-item transparent">
+                {clientLink ? (
+                    <a href={clientLink} target="_blank" rel="noopener noreferrer">{cols}</a>
+                ) : cols}
+            </li>
+        );
+    })}
+</ul>

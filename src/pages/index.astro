@@ -6,6 +6,7 @@ import Certification from "../components/home/Certification.astro";
 import Jobs from "../components/home/Jobs.astro";
 import Polaroids from "../components/home/Polaroids.astro";
 import Projects  from "../components/home/Projects.astro";
+import Clients from "../components/home/Clients.astro";
 ---
 
 <style lang="sass">
@@ -30,6 +31,14 @@ import Projects  from "../components/home/Projects.astro";
       row-gap: 16px
     ul
       flex-direction: column
+  .clients-row
+    display: flex
+    flex-direction: column
+    width: 100%
+    padding: 0 40px 40px
+    ul
+      flex-direction: column
+      width: 100%
   .mobile-menu-overlay
     position: fixed
     width: 100vw
@@ -82,6 +91,9 @@ import Projects  from "../components/home/Projects.astro";
       <Jobs />
       <Projects />
     </div>
+    <div class="clients-row">
+      <Clients />
+    </div>
     <Polaroids />
   </section>
 </Layout>
@@ -114,6 +126,9 @@ import Projects  from "../components/home/Projects.astro";
   
   let projectItemsEl = document.querySelectorAll(".project-item");
   let projectTitleEl = document.querySelector(".project-title") as HTMLElement;
+
+  let clientItemsEl = document.querySelectorAll(".client-item");
+  let clientTitleEl = document.querySelector(".client-title") as HTMLElement;
 
 
   // Store all drag instances in an array, btw objects, array, dan functions kalau disimpan dalam variable, itu pass-by-reference
@@ -254,7 +269,27 @@ import Projects  from "../components/home/Projects.astro";
         });
       },
     })
-    
+    //MASUKKAN CLIENTS TITLE
+    .add(clientTitleEl, {
+      opacity: 1,
+      delay: stagger(100),
+      ease: "inOutExpo",
+      onComplete: () => {
+        clientTitleEl.classList.remove("transparent");
+      },
+    })
+    //MASUKKAN CLIENT
+    .add(clientItemsEl, {
+      opacity: 1,
+      delay: stagger(100),
+      ease: "inOutExpo",
+      onComplete: () => {
+        clientItemsEl.forEach((clientItemEl) => {
+          clientItemEl.classList.remove("transparent");
+        });
+      },
+    })
+
     //POLAROIDS MUNCUL
     .add(polaroidCardsEl, {
       opacity: 1,
