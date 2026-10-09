@@ -309,10 +309,75 @@ import Clients from "../components/home/Clients.astro";
     }, overlapPrev);
   navbarMoreButton(dragInstances); // Pass all instances
 
-  //KLIK NAMA --> SUSUN ULANG POLAROIDS (desktop & mobile)
+  //KLIK NAMA --> TUMPUK POLAROIDS (desktop & mobile)
+  //semua kartu ditarik ke titik tengah, tiap kartu turun sedikit biar kelihatan bertumpuk
+  const stackOffset = 8; //px jarak turun tiap kartu
+  let isStacking = false; //cegah klik dobel selama animasi jalan
+  const stackPolaroids = () => {
+    if (!dragInstances.length || isStacking) return; //intro belum selesai / animasi lagi jalan
+    isStacking = true;
+    const homes = dragInstances.map((dragInstance) => {
+      const rect = dragInstance.$target.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2 - dragInstance.x, //posisi asli tanpa geseran drag
+        y: rect.top + rect.height / 2 - dragInstance.y,
+      };
+    });
+    const centerX = homes.reduce((sum, h) => sum + h.x, 0) / homes.length;
+    const centerY = homes.reduce((sum, h) => sum + h.y, 0) / homes.length;
+    const middle = (homes.length - 1) / 2;
+    const proxies = dragInstances.map((dragInstance, i) => ({
+      x: dragInstance.x,
+      y: dragInstance.y,
+      toX: centerX - homes[i].x,
+      toY: centerY - homes[i].y + (i - middle) * stackOffset,
+    }));
+    animate(proxies, {
+      x: (p) => p.toX,
+      y: (p) => p.toY,
+      delay: stagger(60, staggerRhythm),
+      ease: "inOutExpo",
+      duration: 900,
+      onUpdate: () =>
+        proxies.forEach((p, i) => dragInstances[i].setX(p.x).setY(p.y)),
+      onComplete: () => movePileToTop(proxies, homes),
+    });
+  };
+
+  //SETELAH BERTUMPUK --> PINDAH TUMPUKAN KE ANTARA HEADER & NAVBAR, rata atas
+  //(mobile: navbar-ul hidden, jadi antara header & tombol "more")
+  const getPileSpot = () => {
+    const headerRect = document.querySelector(".splash").getBoundingClientRect();
+    const navbarUl = document.querySelector("ul.navbar-ul");
+    const navEl = navbarUl.getClientRects().length ? navbarUl : btnNavbarMobile;
+    const navRect = navEl.getBoundingClientRect();
+    return {
+      centerX: (headerRect.right + navRect.left) / 2, //tengah-tengah celahnya
+      top: Math.min(headerRect.top, navRect.top),
+    };
+  };
+  const movePileToTop = (proxies, homes) => {
+    const spot = getPileSpot();
+    const cardRect = dragInstances[0].$target.getBoundingClientRect();
+    const middle = (proxies.length - 1) / 2;
+    const pileX = spot.centerX;
+    const pileY = spot.top + cardRect.height / 2 + middle * stackOffset; //kartu pertama rata atas dengan header
+    proxies.forEach((p, i) => {
+      p.toX = pileX - homes[i].x;
+      p.toY = pileY - homes[i].y + (i - middle) * stackOffset;
+    });
+    animate(proxies, {
+      x: (p) => p.toX,
+      y: (p) => p.toY,
+      delay: stagger(60, staggerRhythm),
+      ease: "inOutExpo",
+      duration: 900,
+      onUpdate: () =>
+        proxies.forEach((p, i) => dragInstances[i].setX(p.x).setY(p.y)),
+      onComplete: () => (isStacking = false),
+    });
+  };
   let homeNameEl = document.querySelector(".home-name");
-  homeNameEl?.addEventListener("click", () =>
-    dragInstances.forEach((dragInstance) => dragInstance.reset()),
-  );
+  homeNameEl?.addEventListener("click", stackPolaroids);
 </script>
 <script src="../scripts/typer.js"></script>
