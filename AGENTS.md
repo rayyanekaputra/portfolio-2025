@@ -25,7 +25,7 @@ src/
     home/Certification.astro  certs data object + list
     home/Jobs.astro           jobs data object + list
     home/Projects.astro       projects data object + list
-    home/Clients.astro        clients data object + 3-column list (own full-width .clients-row below .bottom-row)
+    home/Clients.astro        clients data object + 3-column list (own full-width .clients-row below .bottom-row; title beside list like .bottom-row, stacked at ≤1440px)
     home/Polaroids.astro      8 absolutely positioned, draggable photo cards
     Grain.astro               fixed SVG-noise grain overlay (z-index 0, rendered right before <Polaroids />)
   scripts/typer.js            typing effect, the only script in use
@@ -39,7 +39,7 @@ public/                       fonts, photos/frame01-08.png, icons/, favicons, og
 ## How the page works
 
 - **Content lives in the components as data.** Certifications, jobs, and projects are each a `{ "+ label / org (years).": "url" }` object. An empty string means the entry renders without a link. Labels are lowercase, start with `+ `, and end with `.`. Use the same format for new entries.
-  - Clients use the same object, but each label has three parts separated by ` / `: `"+ client (2023) / middle / field."`. `Clients.astro` splits it into a 3-column grid (left, center with `/ … /` added around it, right-aligned). A link wraps only the text in each column (an inline `<a>` inside each `<p>`, the 2nd and 3rd with `tabindex="-1"`), so the empty space in the row isn't clickable.
+  - Clients use the same object, but each label has three parts separated by ` / `: `"+ client (2023) / middle / field."`. `Clients.astro` splits it into a 3-column grid (left, left-aligned middle with `/ … /` added around it, right-aligned). Each `<p>` uses `justify-self` (start/start/end) so it hugs its text instead of stretching to the grid cell. A link wraps only the text in each column (an inline `<a>` inside each `<p>`, the 2nd and 3rd with `tabindex="-1"`), so the empty space in the row isn't clickable.
 - **The intro animation hides content until it reveals it.** Elements start with the class `transparent` (opacity 0). The `createTimeline` in `src/pages/index.astro` fades them in step by step: mobile overlay closes → `#loading-text` counts to "initializing 100%" → `.hero-desc` → cert title/items → experience title/items → project title/items → client title/items → polaroids. Each step's `onComplete` removes `transparent`.
   - Each fade uses `ease: "inOutExpo"`. The item lists (certs, jobs, projects, clients, polaroids) use `delay: stagger(100, staggerRhythm)`. `staggerRhythm` is defined once near the top of the script as a `cubicBezier` ease, so gaps between items go slow → very fast → fast → slow. It shapes the delays, not the motion, so it works like the inverse of a normal ease-in-out. Tune the rhythm there, not in each step.
   - Steps overlap: from cert title onward, each `.add(...)` gets `overlapPrev` (`"<-=" + sectionOverlap`, defined next to `staggerRhythm`) as its position, so it starts before the previous step's `inOutExpo` tail ends. Tune the gap with `sectionOverlap`. The hero-desc step must NOT overlap: `#loading-text` and `.hero-desc` share a flex row, and `#loading-text` only gets `display-none` in its fade-out `onComplete`, so overlapping squeezes the hero text to the wrong width.
