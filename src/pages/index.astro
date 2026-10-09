@@ -376,9 +376,13 @@ import Grain from "../components/Grain.astro";
     const navbarUl = document.querySelector("ul.navbar-ul");
     const navEl = navbarUl.getClientRects().length ? navbarUl : btnNavbarMobile;
     const navRect = navEl.getBoundingClientRect();
+    const isMobile = navEl === btnNavbarMobile;
+    const certTitleRect = document.querySelector(".certification-title").getBoundingClientRect();
     return {
       centerX: (headerRect.right + navRect.left) / 2, //tengah-tengah celahnya
-      top: Math.min(headerRect.top, navRect.top),
+      top: isMobile
+        ? certTitleRect.top //mobile: rata atas dengan judul certifications
+        : Math.min(headerRect.top, navRect.top),
     };
   };
   const movePileToTop = (proxies, homes) => {
