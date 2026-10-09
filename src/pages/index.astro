@@ -329,6 +329,7 @@ import Grain from "../components/Grain.astro";
           dragInstances.push(dragMe); // Store the instance's reference
         });
         locoScroll.start(); //intro selesai --> boleh scroll
+        stackPolaroids(); //sekali di awal --> tumpuk polaroids otomatis
       },
     }, overlapPrev);
   navbarMoreButton(dragInstances); // Pass all instances
