@@ -112,6 +112,10 @@ import Clients from "../components/home/Clients.astro";
   //(ini ngatur delay, bukan posisi. angka ke-3 & ke-4 = seberapa halus ujungnya)
   const staggerRhythm = { ease: "cubicBezier(0, 0.5, 0.8, 0.4)" };
 
+  //JEDA ANTAR ANIMASI: berapa ms animasi berikutnya mulai sebelum yang sebelumnya selesai
+  const sectionOverlap = 500;
+  const overlapPrev = `<-=${sectionOverlap}`;
+
   /*
   TIMELINE ANIMATION FOR HOME
   */
@@ -206,16 +210,15 @@ import Clients from "../components/home/Clients.astro";
       onComplete: () => {
         // console.log(heroDescEl);
       },
-    })
+    }) //no overlap: loading-text masih makan tempat di flex row sampai display-none
     //MASUKKAN CERTIFICATION TITLE
     .add(certTitleEl, {
       opacity: 1,
-      delay: stagger(100),
       ease: "inOutExpo",
       onComplete: () => {
         certTitleEl.classList.remove("transparent");
       },
-    })
+    }, overlapPrev)
     //MASUKKAN CERTIFICATIONS
     .add(certItemsEl, {
       opacity: 1,
@@ -228,16 +231,15 @@ import Clients from "../components/home/Clients.astro";
           certItemEl.classList.remove("transparent");
         });
       },
-    })
+    }, overlapPrev)
     //MASUKKAN EXPERIENCE TITLE
     .add(expTitleEl, {
       opacity: 1,
-      delay: stagger(100),
       ease: "inOutExpo",
       onComplete: () => {
         expTitleEl.classList.remove("transparent");
       },
-    })
+    }, overlapPrev)
     //MASUKKAN JOB
     .add(jobItemsEl, {
       opacity: 1,
@@ -250,16 +252,15 @@ import Clients from "../components/home/Clients.astro";
           jobItemEl.classList.remove("transparent");
         });
       },
-    })
+    }, overlapPrev)
     //MASUKKAN PROJECTS TITLE
     .add(projectTitleEl, {
       opacity: 1,
-      delay: stagger(100),
       ease: "inOutExpo",
       onComplete: () => {
         projectTitleEl.classList.remove("transparent");
       },
-    })
+    }, overlapPrev)
     //MASUKKAN PROJECT
     .add(projectItemsEl, {
       opacity: 1,
@@ -272,16 +273,15 @@ import Clients from "../components/home/Clients.astro";
           projectItemEl.classList.remove("transparent");
         });
       },
-    })
+    }, overlapPrev)
     //MASUKKAN CLIENTS TITLE
     .add(clientTitleEl, {
       opacity: 1,
-      delay: stagger(100),
       ease: "inOutExpo",
       onComplete: () => {
         clientTitleEl.classList.remove("transparent");
       },
-    })
+    }, overlapPrev)
     //MASUKKAN CLIENT
     .add(clientItemsEl, {
       opacity: 1,
@@ -292,7 +292,7 @@ import Clients from "../components/home/Clients.astro";
           clientItemEl.classList.remove("transparent");
         });
       },
-    })
+    }, overlapPrev)
 
     //POLAROIDS MUNCUL
     .add(polaroidCardsEl, {
@@ -306,7 +306,7 @@ import Clients from "../components/home/Clients.astro";
           dragInstances.push(dragMe); // Store the instance's reference
         });
       },
-    });
+    }, overlapPrev);
   navbarMoreButton(dragInstances); // Pass all instances
 </script>
 <script src="../scripts/typer.js"></script>
