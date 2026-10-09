@@ -37,9 +37,13 @@ import Grain from "../components/Grain.astro";
       flex-direction: column
   .clients-row
     display: flex
-    flex-direction: column
+    flex-direction: row
+    column-gap: 40px
     width: 100%
     padding: 0 40px 40px
+    @media (max-width: 1440px)
+      flex-direction: column
+      row-gap: 16px
     ul
       flex-direction: column
       width: 100%

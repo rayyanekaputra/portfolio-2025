@@ -38,5 +38,9 @@ div
 a
     text-decoration: underline
     color: colors.$prim-color
+    transition: color 0.25s ease, text-shadow 0.25s ease
+    &:hover
+        color: colors.$light-color
+        text-shadow: 0 0 8px rgba(colors.$prim-color, 0.35)
 img
     pointer-events: none
